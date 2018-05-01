@@ -44,6 +44,17 @@ object LearningScala2 {
     x += 20
   }
   println({
-    val x = 10; x + 20
+    val x = 10;
+    x + 20
   })
+
+  //print fibonacci numbers
+  var x1 = 1
+  var x2 = 1
+  for (i < 1 to 4) {
+    var temp = x1 + x2
+    x1 = x2
+    x2 = temp
+    println(temp)
+  }
 }
