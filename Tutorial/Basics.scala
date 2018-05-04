@@ -76,3 +76,26 @@ class ScientificCalculator(brand:String) extends Calculator(brand){
 class EvenMoreScientificCalculator(brand:String) extends ScientificCalculator(brand){
   def log(m:Int):Double =  log(m,math.exp(1))
 }
+
+//Abstract Classes
+abstract class Shape{
+  def getArea():Int //subclass should define this
+}
+class Circle(r:Int) extends Shape{
+  def getArea():Int = {r*r*3}
+}
+//Traits
+trait Car{
+  val brand:String
+}
+trait Shiny{
+  val shineRefraction:Int
+}
+class BMW extends Car{
+  val brand = "BMW"
+}
+
+class BMW extends Car with Shiny{
+  val brand = "BMW"
+  val shineRefraction = 12
+}
