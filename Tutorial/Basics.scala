@@ -99,3 +99,10 @@ class BMW extends Car with Shiny{
   val brand = "BMW"
   val shineRefraction = 12
 }
+
+//Types
+trait Cache[K, V] {
+  def get(key: K): V
+  def put(key: K, value: V)
+  def delete(key: K)
+}
