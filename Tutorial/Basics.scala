@@ -20,3 +20,8 @@ def timesTwo(i:Int):Int={
 println("Hello world")
 i*2
 }
+
+//Partial application
+def adder(m:Int,n:Int) = m+n
+val add2 = adder(2,_:Int)
+println(add2(3))
