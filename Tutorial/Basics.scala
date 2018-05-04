@@ -40,3 +40,23 @@ val addTwo = curriedAdd(2)
 def capitalizeAll(args:String*) = {
 args.map {arg=> arg.capitalize}
 }
+/*
+
+*/
+//Classes
+class Calculator{
+val brand:String = "HP"
+def add(m:Int,n:Int):Int = m+n
+}
+//Constructor
+class Calculator(brand:String) {
+  /*A Constructor*/
+  val color:String = if(brand=="TI"){
+    "blue"
+  }else if(brand=="HP"){
+    "black"
+  }else{
+    "white"
+  }
+  def add(m:Int,n:Int):Int = m+n
+}
