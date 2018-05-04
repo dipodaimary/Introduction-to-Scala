@@ -60,3 +60,10 @@ class Calculator(brand:String) {
   }
   def add(m:Int,n:Int):Int = m+n
 }
+
+//Function vs Methods
+class C{
+  var acc = 0
+  def minc = {acc+=1}
+  val finc = {()=>acc+=1}
+}
