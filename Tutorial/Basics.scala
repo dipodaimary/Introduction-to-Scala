@@ -30,3 +30,13 @@ println(add2(3))
 def multiply(m:Int)(n:Int):Int = m*n
 val timesTwo = multiply(2)_
 timesTwo(3)
+
+//multiple arguments and curry it
+
+val curriedAdd = (adder _).curried
+val addTwo = curriedAdd(2)
+
+//Variable length arguments
+def capitalizeAll(args:String*) = {
+args.map {arg=> arg.capitalize}
+}
