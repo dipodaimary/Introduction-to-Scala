@@ -25,3 +25,8 @@ i*2
 def adder(m:Int,n:Int) = m+n
 val add2 = adder(2,_:Int)
 println(add2(3))
+
+//Curried Functions
+def multiply(m:Int)(n:Int):Int = m*n
+val timesTwo = multiply(2)_
+timesTwo(3)
