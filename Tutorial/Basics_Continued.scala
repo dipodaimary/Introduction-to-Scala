@@ -33,3 +33,15 @@ class AddOne extends Function1[Int,Int]{
 class AddOne extends (Int=>Int){
   def apply(m:Int):Int = m+1
 }
+
+//Packages
+package com.twitter.example
+
+object colorHolder {
+  val BLUE = "Blue"
+  val RED = "Red"
+}
+println("the color is: " + com.twitter.example.colorHolder.BLUE)
+
+
+//Pattern Matching
