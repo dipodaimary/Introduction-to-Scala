@@ -20,6 +20,16 @@ object Bar{
 }
 
 //Functions are objects
+//Objects extending functions
 object addOne extends Function1[Int,Int]{
+  def apply(m:Int):Int = m+1
+}
+
+//Classes extending Functions
+class AddOne extends Function1[Int,Int]{
+  def apply(m:Int):Int = m+1
+}
+//Nice shortcut
+class AddOne extends (Int=>Int){
   def apply(m:Int):Int = m+1
 }
