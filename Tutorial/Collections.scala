@@ -13,3 +13,29 @@ hostPort match {
 }
 //Tuple has some special sauce for simply making Tuples of 2 values: ->
 1->2
+//Maps
+Map(1->2)
+Map("foo"->"bar")
+
+//Options
+//Basic interface for Option looks like
+trait Option[T]{
+  def isDefined: Boolean
+  def get: T
+  def getOrElse(t:T): T
+}
+
+val numbers = Map("One"->1,"Two"->2)
+numbers.get("One")
+numbers.get("Two")
+
+val result = if (numbers.get("Two").isDefined) {
+  numbers.get("Two").get * 2
+} else {
+  0
+}
+
+val result = res1 match {
+  case Some(n) => n * 2
+  case None => 0
+}
