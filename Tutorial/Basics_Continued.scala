@@ -74,5 +74,18 @@ def calcType(calc:Calculator) = calc match {
   case _ if calc.brand == "HP" && calc.model == "20B" => "financial"
   case _ if calc.brand == "HP" && calc.model == "48G" => "scientific"
   case _ if calc.brand == "HP" && calc.model == "30B" => "business"
-  case _ => "unknown" 
+  case _ => "unknown"
+}
+
+//Case Classes
+case class Calculator(brand:String, model:String)
+val hp20b = Calculator("HP", "20b")
+val hp20B = Calculator("HP", "20b")
+hp20b==hp20B
+
+def calcType(calc:Calculator) = calc match {
+  case Calculator("HP", "20B") => "financial"
+  case Calculator("HP", "48G") => "scientific"
+  case Calculator("HP", "30B") => "business"
+  case Calculator(ourBrand, ourModel) => "Calculator: %s %s if of unknown type".format(ourBrand,ourModel)
 }
