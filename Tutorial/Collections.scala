@@ -39,3 +39,35 @@ val result = res1 match {
   case Some(n) => n * 2
   case None => 0
 }
+
+//Functional Combinators
+//map
+val numbers = List(1,2,3,4,5)
+val twice_numbers = numbers.map((i:Int)=>i*2)
+//we can also pass functions to map
+def twoTimes(i:Int):Int ={
+  i*2
+}
+val twice_numbers = numbers.map(twoTimes)
+
+//foreach
+numbers.foreach((i:Int) => i*2) //returns nothing
+val doubles = numbers.foreach((i:Int)=>i*2) //doubled: Unit = ()
+
+//filter
+val filteredNumbers = numbers.filter((i:Int) => i%2==0)
+//similar to map we can pass functions
+def isEven(i:Int): Boolean = {
+  i%2==0
+}
+val filteredNumbers = numbers.filter(isEven)
+
+
+//Zip: zip aggregates the contents of two lists
+val list1 = List(1,2,3)
+val list2 = List("a","b","c")
+val result = list1.zip(list2)
+
+//partition splits a list based on where it falls with respect to the predicate function
+val numbers  = List(1,2,3,4,5,6,7,8,9,10)
+numbers.partition((i:Int) => i%2==0)
