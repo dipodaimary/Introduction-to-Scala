@@ -45,3 +45,15 @@ println("the color is: " + com.twitter.example.colorHolder.BLUE)
 
 
 //Pattern Matching
+val times =1
+times match{
+  case 1 => println("one")
+  case 2 => println("two")
+  case _ => println("some other number")
+}
+//Using guards
+times match {
+  case i if i==1 => println("one")
+  case i if i==2 => println("two")
+  case _ => println("some other number")
+}
