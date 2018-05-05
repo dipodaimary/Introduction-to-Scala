@@ -102,3 +102,8 @@ def ourMap(numbers:List[Int],fn:Int=>Int):List[Int] = {
 }
 def timesTwo(i:Int)={i*2}
 ourMap(numbers, timesTwo(_))
+
+//Combinatoral functions on Map
+val extensions = Map("steve" -> 100, "bob" -> 101, "joe" -> 201)
+val filteredExtensions = extensions.filter((namePhone:(String,Int)) => namePhone._2<200)
+extensions.filter({case (name,extension) => extension<200})
