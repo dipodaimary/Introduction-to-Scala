@@ -89,3 +89,24 @@ def calcType(calc:Calculator) = calc match {
   case Calculator("HP", "30B") => "business"
   case Calculator(ourBrand, ourModel) => "Calculator: %s %s if of unknown type".format(ourBrand,ourModel)
 }
+
+//Exceptions
+try{
+  remoteCalculatorService.add(1,2)
+}catch{
+  case e:ServerIsDownException => log.error(e, "the remote calculator service is unavailable. should have kept your trusty HP.")
+}finally{
+  remoteCalculatorService.close()
+}
+
+//Express oriented
+val result: Int = try {
+  remoteCalculatorService.add(1, 2)
+} catch {
+  case e: ServerIsDownException => {
+    log.error(e, "the remote calculator service is unavailable. should have kept your trusty HP.")
+    0
+  }
+} finally {
+  remoteCalculatorService.close()
+}
