@@ -68,3 +68,11 @@ def bigger(o:Any):Any = {
     case text: String => text+"s"
   }
 }
+
+//Matching on class members
+def calcType(calc:Calculator) = calc match {
+  case _ if calc.brand == "HP" && calc.model == "20B" => "financial"
+  case _ if calc.brand == "HP" && calc.model == "48G" => "scientific"
+  case _ if calc.brand == "HP" && calc.model == "30B" => "business"
+  case _ => "unknown" 
+}
