@@ -33,7 +33,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 
-valconf = new SparkConf().setAppName("wordCount")
+val conf = new SparkConf().setAppName("wordCount")
 val sc = new SparkContext(conf)
 
 val input = sc.textFile("data/apodat.txt")
@@ -42,3 +42,11 @@ val words = input.flatMap(line=>line.split(","))
 //transform into pair and count
 val counts = words.map(word=>(word,1)).reduceByKey{case (x,y)=>x+y}
 counts.saveAsTextFile("output/wordCounts")
+
+//RDD basics
+val conf = new SparkConf().setAppName("squareTest")
+val sc = new SparkContext(conf)
+val input = sc.parallelize(List(1,2,3,4))
+val output = input.map(x=>x*x)
+output.saveAsTextFile("output/squareTest")
+println(output.collect().mkString(", "))
