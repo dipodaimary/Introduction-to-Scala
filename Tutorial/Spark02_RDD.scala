@@ -50,3 +50,6 @@ val input = sc.parallelize(List(1,2,3,4))
 val output = input.map(x=>x*x)
 output.saveAsTextFile("output/squareTest")
 println(output.collect().mkString(", "))
+
+//Actions
+val sum = input.reduce((x,y)=>x+y)
