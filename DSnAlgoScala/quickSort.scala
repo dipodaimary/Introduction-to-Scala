@@ -1,3 +1,5 @@
+//Java style quicksort in scala
+
 def quicksort(xs:Array[Int]){
     def swap(i:Int,j:Int){
         xs(i) = xs(i)^xs(j)
