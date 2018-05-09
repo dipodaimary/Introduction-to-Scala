@@ -10,7 +10,13 @@ def mapper(line:String):Person = {
     val person:Person = Person(fields(0).toInt, fields(1), fields(2).toInt, fields(3).toInt)
     return person
 }
-
-val lines = spark.SparkContext.textFile("fakefriends.csv")
+val spark = SparkSession.builder.appName("SparkSQL").master("local[*]").getOrCreate()
+val lines = spark.sparkContext.textFile("fakefriends.csv")
 val people = lines.map(mapper).toDS().cache()
-spark.stop()
+
+println("Here is the inferred schema")
+people.printSchema()
+
+people.select("name").show()
+
+//spark.stop()
