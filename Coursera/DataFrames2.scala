@@ -19,4 +19,13 @@ people.printSchema()
 
 people.select("name").show()
 
-//spark.stop()
+//Filter anyone over 21
+people.filter(people("age")<21).show()
+
+//Group by
+people.groupBy("age").count().show()
+
+//Small mutations
+people.select(people("name"),people("age")+10).show()
+
+spark.stop()
