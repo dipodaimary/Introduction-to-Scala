@@ -31,5 +31,16 @@ val spark = SparkSession.builder.appName("SparkSQL").master("local[*]").getOrCre
 val lines = spark.sparkContext.textFile("u.data").map(x=>Movie(x.split("\t")(1).toInt))
 val moviesDS = lines.toDS()
 val topMoviesIds = moviesDS.groupBy("movieId").count().orderBy(desc("count")).cache()
-topMoviesIds.show()
+//topMoviesIds.show()
+
+//Grab the top 10
+val top10 = topMoviesIds.take(10)
+//Load up the movie ID -> name map
+val names = loadMovieNames()
+//Print the results
+println
+for(result<-top10){
+    println(names(result(0).asInstanceOf[Int])+" : "+result(1))
+}
+
 spark.stop()
