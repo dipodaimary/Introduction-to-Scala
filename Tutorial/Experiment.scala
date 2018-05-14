@@ -12,3 +12,6 @@ flightData.select(max("count")).take(1).foreach(println)
 /*
 Structured API Overview
 */
+
+
+val df = spark.read.format("json").load("/data/flight-data/json/2015-summary.json")
