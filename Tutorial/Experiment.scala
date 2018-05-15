@@ -45,3 +45,17 @@ df.select(
 val dfWithLongColumnName = df.withColumn("This Long Column-Name",expr("ORIGIN_COUNTRY_NAME"))
 
 //
+dfWithLongColumnName.selectExpr("`This Long Column-Name`", "`This Long Column-Name` as `new col`").show(2)
+dfWithLongColumnName.select(col("This Long Column-Name").as("new_new")).show(2)
+
+
+//Removing Columns
+df.drop("ORIGIN_COUNTRY_NAME").show(2)
+//Changing column name with cast
+df.withColumn("count2",col("count").cast("long")).show(2)
+
+//Filtering Rows: using either filter or where
+df.where("count<2").show(2) //we will stick to this notation
+df.filter(col("count")<2).show(2)
+//multiple filters
+df.where(col("count")<2).where(col("ORIGIN_COUNTRY_NAME") =!="Croatia")
