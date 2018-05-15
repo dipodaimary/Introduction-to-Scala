@@ -41,3 +41,7 @@ import org.apache.spark.sql.functions.{expr,col,column}
 df.select(
     df.col("DEST_COUNTRY_NAME")
 ).show()
+
+val dfWithLongColumnName = df.withColumn("This Long Column-Name",expr("ORIGIN_COUNTRY_NAME"))
+
+//
