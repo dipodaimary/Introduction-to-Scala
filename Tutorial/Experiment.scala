@@ -94,3 +94,30 @@ df.sort(desc("count")).show(5)
 
 //import org.apache.spark.sql.functions.{desc,asc}
 df.orderBy(desc("count"),asc("DEST_COUNTRY_NAME")).show(5)
+//Tip: df.orderBy(desc_nulls_first("count"),asc_nulls_first("DEST_COUNTRY_NAME")).show(5)
+
+//Sort Within Partitions
+spark.read.format("json").load("/home/dd/Documents/ScalaGit/data/flight-data/json/2015-summary.json").sortWithinPartiontions("count")
+spark.read.format("json").load("/home/dd/Documents/ScalaGit/data/flight-data/json/2015-summary.json").sortWithinPa
+rtitions("count").show()
+
+//Repartition and Coalesce
+df.rdd.getNumPartitions
+df.repartition(5)
+//If filtering through a certain column often it will be wise to partition based on that column
+df.repartition(col("DEST_COUNTRY_NAME"))
+df.repartition(5,col("DEST_COUNTRY_NAME"))
+
+/*
+Coalesce on the other hand, will not incur a full shuffle and will try to combine partitions.
+This operation will shuffle your data into five partitions based on the destination country name,
+then coalesce them (without a full shuffle)
+*/
+df.repartition(5,col("DEST_COUNTRY_NAME")).coalesce(2)
+
+//Collecting data
+val collectDF = df.limit(10)
+collectDF.take(5) //take works with an Integer count
+collectDF.show()
+collectDF.show(5,false)
+collectDF.collect()
