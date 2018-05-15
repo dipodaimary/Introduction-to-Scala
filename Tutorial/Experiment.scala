@@ -14,4 +14,30 @@ Structured API Overview
 */
 
 
-val df = spark.read.format("json").load("/data/flight-data/json/2015-summary.json")
+val df = spark.read.format("json").load("/home/dd/Documents/ScalaGit/data/flight-data/json/2015-summary.json")
+
+//We can create DataFrames on the fly
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.types.{StructField,StructType,StringType,LongType}
+
+val myManualSchema = new StructType(Array(
+    new StructField("some",StringType,true),
+    new StructField("col",StringType,true),
+    new StructField("names",LongType,false)
+))
+
+val myRows = Seq(Row("Hello",null,1L))
+val myRDD = spark.sparkContext.parallelize(myRows)
+val myDF = spark.createDataFrame(myRDD,myManualSchema)
+myDF.show()
+
+val myDF = Seq(("Hello",2,1L)).toDF("col1","col2","col3")
+
+//select
+df.select("DEST_COUNTRY_NAME").show(2)
+df.select("DEST_COUNTRY_NAME","ORIGIN_COUNTRY_NAME").show(2)
+
+import org.apache.spark.sql.functions.{expr,col,column}
+df.select(
+    df.col("DEST_COUNTRY_NAME")
+).show()
