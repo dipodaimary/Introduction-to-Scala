@@ -84,3 +84,13 @@ val parallelizedRows = spark.sparkContext.parallelize(newRows)
 val newDF = spark.createDataFrame(parallelizedRows,schema)
 
 df.union(newDF).where("count=1").where($"ORIGIN_COUNTRY_NAME"=!="United States").show()
+
+//Soting rows
+df.sort("count").show(5)
+df.orderBy("count","DEST_COUNTRY_NAME").show(5)
+
+df.orderBy(expr("count desc")).show(5)
+df.sort(desc("count")).show(5)
+
+//import org.apache.spark.sql.functions.{desc,asc}
+df.orderBy(desc("count"),asc("DEST_COUNTRY_NAME")).show(5)
