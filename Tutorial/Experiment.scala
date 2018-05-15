@@ -59,3 +59,8 @@ df.where("count<2").show(2) //we will stick to this notation
 df.filter(col("count")<2).show(2)
 //multiple filters
 df.where(col("count")<2).where(col("ORIGIN_COUNTRY_NAME") =!="Croatia")
+
+//Selecting distinct rows
+df.select("ORIGIN_COUNTRY_NAME","DEST_COUNTRY_NAME").distinct().count()
+
+//Random Samples
