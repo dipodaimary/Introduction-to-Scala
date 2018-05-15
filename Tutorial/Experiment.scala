@@ -121,3 +121,11 @@ collectDF.take(5) //take works with an Integer count
 collectDF.show()
 collectDF.show(5,false)
 collectDF.collect()
+
+/*
+Collects partitions to the driver as an iterator. This method allows you to iterate
+over the entire dataset partition-by-partition in a serial manner
+*/
+collectDF.toLocalIterator
+
+//Collection can crash the driver node
