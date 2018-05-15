@@ -64,3 +64,23 @@ df.where(col("count")<2).where(col("ORIGIN_COUNTRY_NAME") =!="Croatia")
 df.select("ORIGIN_COUNTRY_NAME","DEST_COUNTRY_NAME").distinct().count()
 
 //Random Samples
+val seed = 5
+val withReplacement = false
+val fraction = 0.5
+
+df.sample(withReplacement,fraction,seed).count()
+//Random split
+val dataFrames = df.randomSplit(Array(0.25,0.75))
+dataFrames(0).count>dataFrames(1).count
+
+//Appending Rows: union
+import org.apache.spark.sql.Row
+val schema = df.schema
+val newRows = Seq(
+    Row("New Country","Other Country",5L),
+    Row("New Country 2","Other Country 3",1L)
+)
+val parallelizedRows = spark.sparkContext.parallelize(newRows)
+val newDF = spark.createDataFrame(parallelizedRows,schema)
+
+df.union(newDF).where("count=1").where($"ORIGIN_COUNTRY_NAME"=!="United States").show()
