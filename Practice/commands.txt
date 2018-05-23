@@ -1,0 +1,29 @@
+PATH=$PATH:/opt/spark-2.3.0-bin-hadoop2.7/bin
+
+sudo update-alternatives --config java
+sudo update-alternatives --config javac
+
+gsettings set org.gnome.shell.extensions.user-theme name "Flat Remix"
+
+ffmpeg -f concat -i list.txt -c copy output.mp4
+
+ffmpeg -t 5 -i list.txt
+-filter_complex \
+"[0:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=out:st=4:d=1[v0]; \
+ [1:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v1]; \
+ [2:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v2]; \
+ [3:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v3]; \
+ [v0][v1][v2][v3]concat=n=4:v=1:a=0,format=yuv420p[v]" -map "[v]" -s "1280x720" -t 40 ./out_fade.mp4
+
+ffmpeg -f concat -i list.txt -vsync vfr -pix_fmt yuv420p output.mp4
+
+
+ffmpeg -f concat -i list.txt -vsync vfr -filter_complex \
+"[0:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=out:st=4:d=1[v0]; \
+ [1:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v1]; \
+ [2:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v2]; \
+ [3:v]zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':d=125,fade=t=in:st=0:d=1,fade=t=out:st=4:d=1[v3]; \
+ [v0][v1][v2][v3]concat=n=4:v=1:a=0,format=yuv420p[v]" -map "[v]" -s "1280x720" -t 40 ./out_fade.mp4
+
+
+
