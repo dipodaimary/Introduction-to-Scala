@@ -10,12 +10,12 @@ fAndThenG("yay")
 
 //Currying vs Partial Functions
 val one: PartialFunction[Int,String] = {case 1 => "one"}
-one.isDefinedAt(1)
-one.isDefinedAt(2)
-one(1)
+//one.isDefinedAt(1)
+//one.isDefinedAt(2)
+//one(1)
 val two: PartialFunction[Int,String] = {case 2 => "two"}
-two.isDefinedAt(1)
-two.isDefinedAt(2)
+//two.isDefinedAt(1)
+//two.isDefinedAt(2)
 two(2)
 
 val three: PartialFunction[Int,String] = {case 3 => "two"}
@@ -28,3 +28,8 @@ partial(1)
 partial(2)
 partial(3)
 partial(4)
+
+case class PhoneExt(name:String, ext:Int)
+val extensions = List(PhoneExt("steve",100),PhoneExt("robey",200))
+extensions.filter(x=>x.ext<200)
+extensions.filter{case PhoneExt(name,ext) => ext<=200}
