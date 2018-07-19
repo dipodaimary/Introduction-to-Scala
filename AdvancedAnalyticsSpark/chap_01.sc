@@ -1,0 +1,1 @@
+val rdd = sc.parallelize(Array(1,2,3,4),4)
