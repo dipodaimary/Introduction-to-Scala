@@ -16,3 +16,12 @@ option("inferSchema","true").
 csv("/home/dd/Documents/spark-git/data/linkage2")
 
 df.take(100).write.format("parquet).save("/tmp/out/")
+parsed.agg(avg($"cmp_sex"),stddev($"cmp_sex")).show()
+parsed.createOrReplaceTempView("linkage")
+
+spark.sql("""
+SELECT is_match, COUNT(*) AS cnt
+FROM linkage
+GROUP BY is_match
+ORDER BY cnt ASC
+""").explain

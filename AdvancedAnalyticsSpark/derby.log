@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Sat Jul 28 09:52:54 IST 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0164-df20-02f3-00000676e220 
-on database directory /home/dd/Documents/spark-git/Introduction-to-Scala/AdvancedAnalyticsSpark/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@3c5e4aac 
+Sat Jul 28 11:39:19 IST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0164-df81-7117-000010b4d6a8 
+on database directory /home/dd/Documents/spark-git/Introduction-to-Scala/AdvancedAnalyticsSpark/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@14cf30b3 
 Loaded from file:/usr/local/spark/jars/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_171-8u171-b11-0ubuntu0.18.04.1-b11
