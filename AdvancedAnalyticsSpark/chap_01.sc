@@ -25,3 +25,6 @@ FROM linkage
 GROUP BY is_match
 ORDER BY cnt ASC
 """).explain
+
+val summary = parsed.describe()
+summary.rdd.foreach(println)
