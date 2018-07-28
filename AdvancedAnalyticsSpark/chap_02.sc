@@ -72,3 +72,13 @@ def scoreMatchData(md:MatchData):Double = {
 val scored = matchData.map{md=>
     (scoreMatchData(md),md.is_match)
 }.toDF("score","is_match")
+
+#Model Evaluation
+def crossTabs(scored:DataFrame, t:Double): DataFrame = {
+    scored.selectExpr(s"score>= $t as above", "is_match").
+    groupBy("above").
+    pivot("is_match",Seq("true","false")).
+    count()
+} 
+crossTabs(scored,4.0).show
+crossTabs(scored, 2.0).show
