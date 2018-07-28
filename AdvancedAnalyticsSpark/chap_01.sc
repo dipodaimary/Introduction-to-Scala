@@ -29,6 +29,15 @@ ORDER BY cnt ASC
 val summary = parsed.describe()
 summary.rdd.foreach(println)
 
-val matches = parsed.filter($"is_match"===true)
-val misses = parsed.filter($"is_match"===false)
+val matchSummary = parsed.filter($"is_match"===true).describe()
+val misseSummary = parsed.filter($"is_match"===false).describe()
 
+#Transpose DF
+
+val schema = summary.schema
+val longForm = summary.flatMap(row => {
+    val metric = row.getString(0)
+    (1 until row.size).map(i => {
+        (metric, schema(i).name, row.getString(i).toDouble)
+    })
+})
