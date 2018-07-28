@@ -12,7 +12,7 @@ def parseRating(str: String): Rating = {
 val ratings = spark.read.format("csv").option("header","true").load("/tmp/ml-latest-small/ratings.csv")//.map(parseRating).toDF()
 case class Rating(userId:Int, movieId:Int, rating:Double)
 val df = ratings.map{case Row(userId:String,movieId:String,rating:String,timestamp:String)=>Rating(userId.toInt,movieId.toInt,rating.toDouble)}
-val Array(training, test) = ratings.randomSplit(Array(0.8, 0.2))
+val Array(training, test) = df.randomSplit(Array(0.8, 0.2))
 
 // Build the recommendation model using ALS on the training data
 val als = new ALS().
@@ -29,10 +29,10 @@ val model = als.fit(training)
 model.setColdStartStrategy("drop")
 val predictions = model.transform(test)
 
-val evaluator = new RegressionEvaluator()
-  .setMetricName("rmse")
-  .setLabelCol("rating")
-  .setPredictionCol("prediction")
+val evaluator = new RegressionEvaluator().
+  setMetricName("rmse").
+  setLabelCol("rating").
+  setPredictionCol("prediction")
 val rmse = evaluator.evaluate(predictions)
 println(s"Root-mean-square error = $rmse")
 

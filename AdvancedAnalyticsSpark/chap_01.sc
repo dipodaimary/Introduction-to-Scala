@@ -14,3 +14,5 @@ option("header","true").
 option("nullValue","?").
 option("inferSchema","true").
 csv("/home/dd/Documents/spark-git/data/linkage2")
+
+df.take(100).write.format("parquet).save("/tmp/out/")
