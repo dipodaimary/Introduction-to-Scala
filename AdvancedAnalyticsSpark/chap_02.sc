@@ -33,3 +33,6 @@ def pivotSummary(desc: DataFrame): DataFrame = {
     pivot("metric", Seq("count", "mean", "stddev", "min", "max")).
     agg(first("value"))
 }
+
+val matchSummaryT = pivotSummary(matchSummary)
+val missSummaryT = pivotSummary(missSummary)
