@@ -28,3 +28,7 @@ ORDER BY cnt ASC
 
 val summary = parsed.describe()
 summary.rdd.foreach(println)
+
+val matches = parsed.filter($"is_match"===true)
+val misses = parsed.filter($"is_match"===false)
+
