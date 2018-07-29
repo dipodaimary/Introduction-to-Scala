@@ -26,3 +26,14 @@ val artistByID = rawArtistData.flatMap{line=>
         }
     }
 }.toDF("id","name")
+
+val rawArtistAlias = spark.read.textFile("/home/dd/Documents/spark-git/data/audioscrabber/artist_alias_small.txt")
+val artistAlias = rawArtistAlias.flatMap{line=>
+    val Array(artist,alias) = line.split('\t')
+    if(artist.isEmpty){
+        None
+    }else{
+        Some((artist.toInt,alias.toInt))
+    }
+}.collect().toMap
+artistByID.filter($"id" isin (1208690,1003926)).show
