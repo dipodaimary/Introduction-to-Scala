@@ -55,3 +55,44 @@ def buildCounts(
 val bArtistAlias = spark.sparkContext.broadcast(artistAlias)
 val trainData = buildCounts(rawUserArtistData,bArtistAlias)
 trainData.cache()
+
+## broadcast hash join and a little about broadcast variables
+import org.apache.spark.ml.recommendation._
+import scala.util.Random
+val model = new ALS().
+setSeed(Random.nextLong()).
+setImplicitPrefs(true).
+setRank(10).
+setRegParam(0.01).
+setAlpha(1.0).
+setMaxIter(5).
+setUserCol("user").
+setItemCol("artist").
+setRatingCol("count").
+setPredictionCol("prediction").
+fit(trainData)
+
+val userID = 2093760
+val existingArtistIDs = trainData.
+filter($"user" === userID).
+select("artist").as[Int].collect()
+artistByID.filter($"id" isin (existingArtistIDs:_*)).show()
+
+def makeRecommendations(
+model: ALSModel,
+userID: Int,
+howMany: Int): DataFrame = {
+val toRecommend = model.itemFactors.
+select($"id".as("artist")).
+withColumn("user", lit(userID))
+model.transform(toRecommend).
+select("artist", "prediction").
+orderBy($"prediction".desc).
+limit(howMany)
+}
+val topRecommendations = makeRecommendations(model, userID, 5)
+topRecommendations.show()
+
+val recommendedArtistIDs =
+topRecommendations.select("artist").as[Int].collect()
+artistByID.filter($"id" isin (recommendedArtistIDs:_*)).show()
