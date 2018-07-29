@@ -72,16 +72,13 @@ setRatingCol("count").
 setPredictionCol("prediction").
 fit(trainData)
 
-val userID = 2093760
+val userID = 1059637
 val existingArtistIDs = trainData.
 filter($"user" === userID).
 select("artist").as[Int].collect()
 artistByID.filter($"id" isin (existingArtistIDs:_*)).show()
 
-def makeRecommendations(
-model: ALSModel,
-userID: Int,
-howMany: Int): DataFrame = {
+def makeRecommendations(model: ALSModel,userID: Int,howMany: Int): DataFrame = {
 val toRecommend = model.itemFactors.
 select($"id".as("artist")).
 withColumn("user", lit(userID))
@@ -96,3 +93,4 @@ topRecommendations.show()
 val recommendedArtistIDs =
 topRecommendations.select("artist").as[Int].collect()
 artistByID.filter($"id" isin (recommendedArtistIDs:_*)).show()
+
