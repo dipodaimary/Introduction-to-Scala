@@ -7,3 +7,22 @@ val userArtistDF = rawUserArtistData.map{line=>
 
 userArtistDF.agg(min(user),max(user),main(artist),max(artist)).show
 userArtistDF.agg(min("user"),max("user"),min("artist"),max("artist")).show()
+
+val rawArtistData = spark.read.textFile("/home/dd/Documents/spark-git/data/audioscrabber/artist_data_small.txt")
+rawArtistData.map{line=>
+    val (id,name) = line.span(_!='\t')
+    (id.toInt, name.trim)
+}.count
+
+val artistByID = rawArtistData.flatMap{line=>
+    val (id,name) = line.span(_!='\t')
+    if(name.isEmpty){
+        None
+    }else{
+        try{
+            Some((id.toInt,name.trim))
+        }catch{
+            case _:NumberFormatException => None
+        }
+    }
+}.toDF("id","name")
