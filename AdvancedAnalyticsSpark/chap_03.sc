@@ -134,3 +134,32 @@ join(listenCounts, Seq("artist"), "left_outer").
 select("user", "artist", "prediction")
 }
 areaUnderCurve(cvData, bAllArtistIDs, predictMostListened(trainData))
+
+//Hyperparameter selection
+val evaluations = for(rank<-Seq(5,30);regParam<-Seq(4.0,0.0001);alpha<-Seq(1.0,40.0)) yield {
+    val model = new ALS().
+    setSeed(Random.nextLong()).
+    setImplicitPrefs(true).
+    setRank(rank).
+    setRegParam(regParam).
+    setAlpha(alpha).
+    setMaxIter(20).
+    setUserCol("user").
+    setItemCol("artist").
+    setRatingCol("count").
+    setRatingCol("count").
+    setPredictionCol("prediction").
+    fit(trainData)
+    val auc = areaUnderCurve(cvData,bAllArtistIDs,model.transform)
+    model.userFactors.unpersist()
+    model.itemFactors.unpersist()
+    (auc,(rank,regParam,alpha))
+}
+evaluations.sorted.reverse.foreach(println)
+val someUsers = allData.select("user").as[Int].distinct().take(100)
+val someRecommendations =
+someUsers.map(userID => (userID, makeRecommendations(model, userID, 5)))
+someRecommendations.foreach { case (userID, recsDF) =>
+val recommendedArtists = recsDF.select("artist").as[Int].collect()
+println(s"$userID -> ${recommendedArtists.mkString(", ")}")
+}
