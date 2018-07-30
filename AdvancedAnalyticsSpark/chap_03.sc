@@ -163,3 +163,7 @@ someRecommendations.foreach { case (userID, recsDF) =>
 val recommendedArtists = recsDF.select("artist").as[Int].collect()
 println(s"$userID -> ${recommendedArtists.mkString(", ")}")
 }
+rawArtistData.map { line =>
+val (id, name) = line.span(_ != '\t')
+(name.trim, id.int)
+}
