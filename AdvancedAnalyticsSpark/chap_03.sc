@@ -77,6 +77,9 @@ val existingArtistIDs = trainData.
 filter($"user" === userID).
 select("artist").as[Int].collect()
 artistByID.filter($"id" isin (existingArtistIDs:_*)).show()
+//existingArtistIDs.sorted.foreach(println)
+//existingArtistIDs.sorted.reverse.foreach(println)
+
 
 def makeRecommendations(model: ALSModel,userID: Int,howMany: Int): DataFrame = {
 val toRecommend = model.itemFactors.
@@ -87,6 +90,7 @@ select("artist", "prediction").
 orderBy($"prediction".desc).
 limit(howMany)
 }
+//val toRecommend = model.itemFactors.select($"id".as("artist")).withColumn("user",lit(1059637))
 val topRecommendations = makeRecommendations(model, userID, 5)
 topRecommendations.show()
 
@@ -94,3 +98,39 @@ val recommendedArtistIDs =
 topRecommendations.select("artist").as[Int].collect()
 artistByID.filter($"id" isin (recommendedArtistIDs:_*)).show()
 
+
+
+//Evaluating Recommendation Quality
+//AUC
+def areaUnderCurve(
+    positiveData:DataFrame,
+    bAllArtistIDs: Broadcast[Array[Int]],
+    predictionFunction: (DataFrame=>DataFrame)
+): Double = {
+
+} 
+val allData = buildCounts(rawUserArtistData, bArtistAlias)
+val Array(trainData, cvData) = allData.randomSplit(Array(0.9, 0.1))
+trainData.cache()
+cvData.cache()
+val allArtistIDs = allData.select("artist").as[Int].distinct().collect()
+val bAllArtistIDs = spark.sparkContext.broadcast(allArtistIDs)
+val model = new ALS().
+setSeed(Random.nextLong()).
+setImplicitPrefs(true).
+setRank(10).setRegParam(0.01).setAlpha(1.0).setMaxIter(5).
+setUserCol("user").setItemCol("artist").
+setRatingCol("count").setPredictionCol("prediction").
+fit(trainData)
+areaUnderCurve(cvData, bAllArtistIDs, model.transform)
+
+def predictMostListened(train: DataFrame)(allData: DataFrame) = {
+val listenCounts = train.
+groupBy("artist").
+agg(sum("count").as("prediction")).
+select("artist", "prediction")
+allData.
+join(listenCounts, Seq("artist"), "left_outer").
+select("user", "artist", "prediction")
+}
+areaUnderCurve(cvData, bAllArtistIDs, predictMostListened(trainData))
